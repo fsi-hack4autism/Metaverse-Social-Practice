@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using System.Linq;
 
 public class PlatformHandler : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class PlatformHandler : MonoBehaviour
     public static Platform platform = Platform.Unknown;
     [SerializeField] private Platform _platform = Platform.Unknown; // For unity inspector
 
+    [SerializeField] public PlatformController[] Controllers;
 
     [Header("Platform based conditions")]
     public UnityEvent IfDesktopVR = new UnityEvent();
@@ -39,6 +41,12 @@ public class PlatformHandler : MonoBehaviour
         }
         OnPlatformSet();
     }
+
+    /// <summary>
+    /// Attempts to automatically set the platform
+    /// Calls the event for the platform
+    /// Looks through platform controllers for the right controller
+    /// </summary>
     private void AutoDetectPlatform()
     {
         // Mobile
@@ -79,47 +87,53 @@ public class PlatformHandler : MonoBehaviour
         Debug.Log("[PlatformManager] Platform auto detected: " + platform.ToString());
     }
 
+    /// <summary>
+    /// Handles enabling and disabling platform controllers
+    /// And calls appropriate functions when the platform changes
+    /// </summary>
     private void OnPlatformSet()
     {
+        // Disable all controllers
+        foreach (var c in Controllers)
+        {
+            c.controller.SetActive(false);
+        }
+
+        // Set controller active for platform and invoke event
         switch (platform)
         {
             case Platform.DesktopVR:
+                //Controllers.Where(c => c.isVR && c.platforms.Contains(Platform.Desktop)).ToArray()[0].controller.SetActive(true);
                 IfDesktopVR.Invoke();
                 break;
             case Platform.MobileVR:
+                //Controllers.Where(c => c.isVR && c.platforms.Contains(Platform.Mobile)).ToArray()[0].controller.SetActive(true);
                 IfMobileVR.Invoke();
                 break;
             case Platform.Desktop:
+                //Controllers.Where(c => !c.isVR && c.platforms.Contains(Platform.Desktop)).ToArray()[0].controller.SetActive(true);
                 IfDesktop.Invoke();
                 break;
             case Platform.Mobile:
+                //Controllers.Where(c => !c.isVR && c.platforms.Contains(Platform.Mobile)).ToArray()[0].controller.SetActive(true);
                 IfMobile.Invoke();
                 break;
             case Platform.WebGL:
+                //Controllers.Where(c => !c.isVR && c.platforms.Contains(Platform.WebGL)).ToArray()[0].controller.SetActive(true);
                 IfWebGL.Invoke();
                 break;
             default:
                 break;
         }
-
-        //NudgeUser();
     }
 
-    /// <summary>
-    /// Makes the user take a small setup forward
-    /// to engage physics system
-    /// </summary>
-    //public static void NudgeUser()
-    //{
-    //    var controller = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterController>();
-    //    // raycast down to floor
-    //    var ray = new Ray(controller.transform.position, Vector3.down);
-    //    if (Physics.Raycast(ray, out var hit, 10f))
-    //    {
-    //        // if floor is found, move player to floor
-    //        controller.transform.position = hit.point;
-    //    }
-    //}
+    [System.Serializable]
+    public struct PlatformController
+    {
+        public GameObject controller;
+        public Platform[] platforms;
+        public bool isVR;
+    }
 }
 
 public enum Platform
