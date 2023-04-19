@@ -1,0 +1,189 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &9189663998589819403
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9195559139946633257}
+  - component: {fileID: 9086755724146700143}
+  m_Layer: 0
+  m_Name: README
+  m_TagString: Untagged
+  m_Icon: {fileID: 2800000, guid: bda08954ca14120468d5def5b44fc4b1, type: 3}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9195559139946633257
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9189663998589819403}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9086755724146700143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9189663998589819403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dac210a80c64f089652dec17dda8e47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fontColor: {r: 0, g: 0, b: 0, a: 1}
+  richTextTagMap: 010101010101010101000000000000010101010101010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000101010101010101010101010101010101010101010101010101010101000000000000010101010101010101010101010101000001010101000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000101010001010101000000010101000000000101010100000001010100000000000000010101010000000000000000000001010101010101010101010101010101010000000101010101010101000001010101010101010101010101010101010000000000010101010101010100000101010101010101010101010101010101000000000101010101010101000000000000000000000101010101010101000000000001010101010101000101010101010101010000000101010101010100000001010101010101010101010101010101010101010101010101010101010000000000000000000000000000000000010101010101010101010101010101000101010100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001010101010101010101010101010101010101000000000000000000000000000000000001010101010101010101010101010101010101000000000000000000000000010101010101010101010101010101010101010000000000000000000000000101010101010101010101010101010101010100000000000000000000010101010101010101010101010101010101010000000000000000000000010101010101010101010101010101010101010000000101010101010101010101010101010101010101010101010101010101000000000000000000000000000000000101010101010101010101010101010001010101000000000000000101010000000000000101010100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  font: {fileID: 0}
+  fontSize: 12
+  iconBeingUsed: 1
+  useTackIcon: 1
+  readonlyMode: 0
+  activeSettings:
+    name: Paid
+    id: 30c0eca9-01de-41b5-bf2e-1a8e9a1206f7
+    skin: Custom
+    path: Assets/Packages/TP/Readme/Editor\..\Settings
+    fileName: Paid
+    redistributable: 0
+    lite: 0
+    priority: 5
+    type: json
+    lastPopupDate: 1/1/2000 12:00:00 AM
+  allSettings:
+  - name: Free
+    id: 817f8bd3-6a31-4b68-a1dc-7c2bb2b78c46
+    skin: Custom
+    path: Assets/Packages/TP/Readme/Settings
+    fileName: Free
+    redistributable: 1
+    lite: 0
+    priority: 10
+    type: json
+    lastPopupDate: 1/1/2000 12:00:00 AM
+  - name: Lite
+    id: f3de355d-ddb4-4eee-bf3d-388f95ac3ad0
+    skin: Custom
+    path: Assets/Packages/TP/Readme/Settings
+    fileName: Lite
+    redistributable: 0
+    lite: 1
+    priority: 7
+    type: json
+    lastPopupDate: 8/24/2022 6:24:26 PM
+  - name: New
+    id: d1a122f7-4a79-44c0-9570-4911ded4c5b3
+    skin: Default
+    path: Assets\TP\Readme\Scripts\Settings
+    fileName: New
+    redistributable: 1
+    lite: 1
+    priority: 1000
+    type: json
+    lastPopupDate: 1/1/2000 12:00:00 AM
+  - name: Paid
+    id: 30c0eca9-01de-41b5-bf2e-1a8e9a1206f7
+    skin: Custom
+    path: Assets/Packages/TP/Readme/Editor\..\Settings
+    fileName: Paid
+    redistributable: 0
+    lite: 0
+    priority: 5
+    type: json
+    lastPopupDate: 1/1/2000 12:00:00 AM
+  readmeData:
+    richText: "<size=20>Readme</size>\n\nReadme is a component that allows you to
+      notes and documentation in Unity!\n\n<b><color=\"#444444\"><size=16>Styles</size></color>\n\n</b>Readme
+      uses Unity's build in Rich Text Formating and supports the styles that Unity
+      supports. <b>\n</b>\n\u2022 <b>Bold</b>\n\u2022 <i>Italics</i>\n\u2022 Color:
+      <color=\"#ff0000\">Red</color>, <color=\"#00ff00\">Green</color>, <color=\"#0000ff\">Blue</color>!\n\u2022
+      Size: <size=8>small</size> <size=18>BIG</size> \n\n<b><color=\"#444444\"><size=16>Object
+      References</size></color>\n</b>\nObject references can be draged and dropeed
+      to create inline references.\n\n\u2022 Scene:  <o=\"1258885\"></o> \n\u2022
+      Game Object:   <o=\"6055321\"></o> \n\u2022 Prefab:   <o=\"6651506\"></o> \n\u2022
+      Script:   <o=\"5715158\"></o> \n\u2022 File:   <o=\"4670739\"></o> \n\u2022
+      Folder:  <o=\"9751950\"></o> \n\n\n<b><color=\"#444444\"><size=16>Toolbar Features</size></color>\n</b>\nClick
+      <b>\"Edit\"</b> The toolbar below serves a few useful functions. \n\n\u2022
+      Change font color\n\u2022 Change font style\n\u2022 Change font size \n\u2022
+      Bold togle button\n\u2022 Italics toggle button\n\u2022 Add object field button\n\u2022
+      View the source for quick editing\n\u2022 Advanced tab for debugging "
+    textAreaObjectFields:
+    - name: Example (1258885)
+      objectId: 1258885
+      objectRef: {fileID: 102900000, guid: bdde231bca031074084989b606c30463, type: 3}
+      fieldRect:
+        serializedVersion: 2
+        x: 81
+        y: 601
+        width: 140
+        height: 15
+      index: 594
+      length: 17
+    - name: null (6055321)
+      objectId: 6055321
+      objectRef: {fileID: 0}
+      fieldRect:
+        serializedVersion: 2
+        x: 128
+        y: 615
+        width: 140
+        height: 15
+      index: 630
+      length: 17
+    - name: Prefab Dummy (6651506)
+      objectId: 6651506
+      objectRef: {fileID: 2096799080148812406, guid: f5c81acffe6e2024a9848c9e18416adf,
+        type: 3}
+      fieldRect:
+        serializedVersion: 2
+        x: 88
+        y: 629
+        width: 140
+        height: 15
+      index: 661
+      length: 17
+    - name: ReadmeManager (5715158)
+      objectId: 5715158
+      objectRef: {fileID: 11500000, guid: 9c0cd4005c8f32a4295471dcd0ec2ec8, type: 3}
+      fieldRect:
+        serializedVersion: 2
+        x: 82
+        y: 643
+        width: 140
+        height: 15
+      index: 692
+      length: 17
+    - name: Text File Dummy (4670739)
+      objectId: 4670739
+      objectRef: {fileID: 4900000, guid: f77a468c860d45942be3c861054408e7, type: 3}
+      fieldRect:
+        serializedVersion: 2
+        x: 68
+        y: 657
+        width: 140
+        height: 15
+      index: 721
+      length: 17
+    - name: Scene Sample (9751950)
+      objectId: 9751950
+      objectRef: {fileID: 102900000, guid: d83cd37472bcadb4da30c2b07b21010f, type: 3}
+      fieldRect:
+        serializedVersion: 2
+        x: 82
+        y: 671
+        width: 140
+        height: 15
+      index: 751
+      length: 17
+    objectIdPairs: []
