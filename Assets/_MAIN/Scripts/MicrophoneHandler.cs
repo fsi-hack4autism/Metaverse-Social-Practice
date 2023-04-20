@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,8 +18,6 @@ public class MicrophoneHandler : MonoBehaviour
     [Tooltip("Number of minutes an audio recording can last for")]
     public float MaxDuration = 10;
     public GameObject Visual;
-
-    public UnityEvent<string> OnUserComment = new UnityEvent<string>();
 
 
     private MicrophoneControls input = null;
@@ -106,22 +105,6 @@ public class MicrophoneHandler : MonoBehaviour
         if (Visual) Visual.SetActive(true);
     }
 
-    //private IEnumerator WhileRecording()
-    //{
-    //    float startTime = Time.time;
-
-    //    // extend recording length as needed
-    //    while (this._isRecording)
-    //    {
-    //        // wait until recording duration is almost finished
-    //        yield return new WaitForSeconds(this._audioClip.length - 1);
-    //        if (this._isRecording)
-    //        {
-    //            this._audioClip.
-    //        }
-    //    }
-    //}
-
     public void StopRecording()
     {
         if (!this._isRecording) return;
@@ -129,26 +112,34 @@ public class MicrophoneHandler : MonoBehaviour
 
         Microphone.End(this.Device);
         CleanRecording(this._audioClip);
-        StartCoroutine(SpeechToText(this._audioClip));
+        GetComponent<SpeechToTextHandler>().Convert(this._audioClip);
 
         if (Visual) Visual.SetActive(false);
     }
 
+    /// <summary>
+    /// Trims silence
+    /// </summary>
+    /// <param name="clip"></param>
     private void CleanRecording(AudioClip clip)
     {
+        float threshold = 0.001f;
+        int endIndex = -1;
+        float[] data = new float[clip.samples];
+        clip.GetData(data, 0);
 
-    }
+        for (int i = data.Length - 1; i >= 0; i--)
+        {
+            if (Mathf.Abs(data[i]) > threshold)
+            {
+                endIndex = i;
+                break;
+            }
+        }
+        Debug.Log($"[MicrophoneHandler] trimming at {endIndex} / {data.Length}");
 
-    public void AudioClip_to_Wav(AudioClip clip)
-    {
-        Debug.Log($"[MicrophoneHandler] got audio clip of length {clip.length}");
-        var source = this.gameObject.AddComponent<AudioSource>();
-        source.clip = clip;
-        source.Play();
-    }
-
-    private IEnumerator SpeechToText(AudioClip audio)
-    {
-        yield break;
+        float[] newData = new float[data.Length - endIndex];
+        Buffer.BlockCopy(data, 0, newData, 0, newData.Length);
+        clip.SetData(newData, 0);
     }
 }

@@ -1185,6 +1185,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1559133135}
   - component: {fileID: 1559133136}
+  - component: {fileID: 1559133137}
   m_Layer: 0
   m_Name: Microphone
   m_TagString: Untagged
@@ -1219,23 +1220,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c78ccd273a1084532bde325fd7fdb900, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxDuration: 0.6
+  MaxDuration: 0.5
   Visual: {fileID: 827891082}
-  OnUserComment:
+--- !u!114 &1559133137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1559133134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a1ed5643c8044d6fbab08453bc32d04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Url: 
+  Key: 
+  OnText:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 258370456}
-        m_TargetAssemblyTypeName: Persona, Assembly-CSharp
-        m_MethodName: RespondTo
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1001 &1706633080
 PrefabInstance:
   m_ObjectHideFlags: 0
