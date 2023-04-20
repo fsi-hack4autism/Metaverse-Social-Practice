@@ -13,8 +13,8 @@ using UnityEngine.Events;
 public class Conversation : MonoBehaviour
 {
     // This example requires environment variables named "SPEECH_KEY" and "SPEECH_REGION"
-    const string speechKey = "f4734b50ee64422eb2d3e9bdc2a21fba"; // Environment.GetEnvironmentVariable("SPEECH_KEY");
-    const string speechRegion = "eastus"; // Environment.GetEnvironmentVariable("SPEECH_REGION");
+    const string speechKey = Environment.GetEnvironmentVariable("SPEECH_KEY");
+    const string speechRegion = Environment.GetEnvironmentVariable("SPEECH_REGION");
 
     public UnityEvent<(byte[], string)> OnAudioReceived = new UnityEvent<(byte[], string)>();
 
