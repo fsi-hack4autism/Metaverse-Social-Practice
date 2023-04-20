@@ -42,14 +42,14 @@ public class WozHandler : MonoBehaviour
     {
         _index -= 1;
         if (_index < 0) _index = 0;
-        Character.Speak(Responses[_index].audio, Responses[_index].visemes);
+        Responses[_index].source.Speak(Responses[_index].audio, Responses[_index].visemes);
     }
 
     private void GoForward(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
         _index += 1;
         if (_index >= Responses.Length) _index = Responses.Length - 1;
-        Character.Speak(Responses[_index].audio, Responses[_index].visemes);
+        Responses[_index].source.Speak(Responses[_index].audio, Responses[_index].visemes);
     }
 
 
@@ -61,6 +61,7 @@ public class WozHandler : MonoBehaviour
         public AudioClip audio;
         public Streamer.Viseme[] visemes;
         public string visemeFile;
+        public Persona source;
 
         public void LoadVisemeFile()
         {
