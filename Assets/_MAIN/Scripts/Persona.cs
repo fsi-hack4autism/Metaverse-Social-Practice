@@ -29,6 +29,9 @@ public class Persona : MonoBehaviour
 
     public void Speak(AudioClip audio, Streamer.Viseme[] visemes)
     {
-
+        var audioSource = GetComponent<AudioSource>();
+        audioSource.clip = audio;
+        audioSource.Play();
+        GetComponent<Streamer>().PlayVisemes(visemes);
     }
 }

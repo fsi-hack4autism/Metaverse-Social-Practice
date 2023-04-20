@@ -165,9 +165,12 @@ public class Streamer : MonoBehaviour
         //this.avatarAnimator.runtimeAnimatorController = this.overrideController;
 
         // Get skinned mesh renderers
-        this.skinnedMeshRends["body"] = avatarAnimator.transform.Find("CC_Base_Body").GetComponent<SkinnedMeshRenderer>();
-        this.skinnedMeshRends["teeth"] = avatarAnimator.transform.Find("CC_Base_Teeth").GetComponent<SkinnedMeshRenderer>();
-        this.skinnedMeshRends["tongue"] = avatarAnimator.transform.Find("CC_Base_Tongue").GetComponent<SkinnedMeshRenderer>();
+        Debug.Log(avatarAnimator.transform.Find("CC_Base_Body").name);
+        Debug.Log(avatarAnimator.transform.Find("CC_Base_Body").GetComponent<SkinnedMeshRenderer>());
+        // Debug.Log(this.skinnedMeshRends["body"]);
+        this.skinnedMeshRends.Add("body", avatarAnimator.transform.Find("CC_Base_Body").GetComponent<SkinnedMeshRenderer>());
+        this.skinnedMeshRends.Add("teeth", avatarAnimator.transform.Find("CC_Base_Teeth").GetComponent<SkinnedMeshRenderer>());
+        this.skinnedMeshRends.Add("tongue", avatarAnimator.transform.Find("CC_Base_Tongue").GetComponent<SkinnedMeshRenderer>());
 
         // Create blendshape mapping
         for (int i = 0; i < this.skinnedMeshRends["body"].sharedMesh.blendShapeCount; i++)
@@ -299,6 +302,7 @@ public class Streamer : MonoBehaviour
         return blendkey;
     }
 
+    [System.Serializable]
     public struct Viseme
     {
         public float time;

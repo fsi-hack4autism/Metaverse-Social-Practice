@@ -35,6 +35,24 @@ public partial class @MicrophoneControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""WozForward"",
+                    ""type"": ""Button"",
+                    ""id"": ""0225c2d4-4379-4276-9fbd-befb33f2abdc"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""WozBackward"",
+                    ""type"": ""Button"",
+                    ""id"": ""cad828c8-4909-4bb8-9470-7d2efa51845f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -59,6 +77,50 @@ public partial class @MicrophoneControls: IInputActionCollection2, IDisposable
                     ""action"": ""Record"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b6da8f22-78cd-4b6b-96bf-077383269bf0"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WozForward"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7e3d55f0-0b56-496a-a163-a78e944ade68"",
+                    ""path"": ""<XRController>{RightHand}/primaryButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WozForward"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2b0ee248-8ac8-455c-848e-abd02c91576d"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WozBackward"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4b20f8d6-d0fe-4d8d-ba06-4718ef71b570"",
+                    ""path"": ""<XRController>{LeftHand}/primaryButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WozBackward"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -68,6 +130,8 @@ public partial class @MicrophoneControls: IInputActionCollection2, IDisposable
         // Microphone
         m_Microphone = asset.FindActionMap("Microphone", throwIfNotFound: true);
         m_Microphone_Record = m_Microphone.FindAction("Record", throwIfNotFound: true);
+        m_Microphone_WozForward = m_Microphone.FindAction("WozForward", throwIfNotFound: true);
+        m_Microphone_WozBackward = m_Microphone.FindAction("WozBackward", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -130,11 +194,15 @@ public partial class @MicrophoneControls: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Microphone;
     private List<IMicrophoneActions> m_MicrophoneActionsCallbackInterfaces = new List<IMicrophoneActions>();
     private readonly InputAction m_Microphone_Record;
+    private readonly InputAction m_Microphone_WozForward;
+    private readonly InputAction m_Microphone_WozBackward;
     public struct MicrophoneActions
     {
         private @MicrophoneControls m_Wrapper;
         public MicrophoneActions(@MicrophoneControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Record => m_Wrapper.m_Microphone_Record;
+        public InputAction @WozForward => m_Wrapper.m_Microphone_WozForward;
+        public InputAction @WozBackward => m_Wrapper.m_Microphone_WozBackward;
         public InputActionMap Get() { return m_Wrapper.m_Microphone; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -147,6 +215,12 @@ public partial class @MicrophoneControls: IInputActionCollection2, IDisposable
             @Record.started += instance.OnRecord;
             @Record.performed += instance.OnRecord;
             @Record.canceled += instance.OnRecord;
+            @WozForward.started += instance.OnWozForward;
+            @WozForward.performed += instance.OnWozForward;
+            @WozForward.canceled += instance.OnWozForward;
+            @WozBackward.started += instance.OnWozBackward;
+            @WozBackward.performed += instance.OnWozBackward;
+            @WozBackward.canceled += instance.OnWozBackward;
         }
 
         private void UnregisterCallbacks(IMicrophoneActions instance)
@@ -154,6 +228,12 @@ public partial class @MicrophoneControls: IInputActionCollection2, IDisposable
             @Record.started -= instance.OnRecord;
             @Record.performed -= instance.OnRecord;
             @Record.canceled -= instance.OnRecord;
+            @WozForward.started -= instance.OnWozForward;
+            @WozForward.performed -= instance.OnWozForward;
+            @WozForward.canceled -= instance.OnWozForward;
+            @WozBackward.started -= instance.OnWozBackward;
+            @WozBackward.performed -= instance.OnWozBackward;
+            @WozBackward.canceled -= instance.OnWozBackward;
         }
 
         public void RemoveCallbacks(IMicrophoneActions instance)
@@ -174,5 +254,7 @@ public partial class @MicrophoneControls: IInputActionCollection2, IDisposable
     public interface IMicrophoneActions
     {
         void OnRecord(InputAction.CallbackContext context);
+        void OnWozForward(InputAction.CallbackContext context);
+        void OnWozBackward(InputAction.CallbackContext context);
     }
 }
