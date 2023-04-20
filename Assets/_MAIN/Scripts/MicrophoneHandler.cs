@@ -16,8 +16,52 @@ public class MicrophoneHandler : MonoBehaviour
 
     [Tooltip("Number of minutes an audio recording can last for")]
     public float MaxDuration = 10;
+    public GameObject Visual;
 
     public UnityEvent<AudioClip> OnRecordingComplete = new UnityEvent<AudioClip>();
+
+
+    private MicrophoneControls input = null;
+
+    private void Awake()
+    {
+        input = new MicrophoneControls();
+        if (Visual) Visual.SetActive(false);
+    }
+
+
+    /* ===== INPUT ===== */
+
+    private void OnEnable()
+    {
+        input.Enable();
+        input.Microphone.Record.performed += Record_performed;
+    }
+
+    private void OnDisable()
+    {
+        input.Disable();
+        input.Microphone.Record.performed -= Record_performed;
+    }
+
+    private void Record_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        bool value = obj.ReadValueAsButton();
+        Debug.Log(value);
+        if (value)
+        {
+            StartRecording();
+        }
+        else
+        {
+            StopRecording();
+        }
+    }
+
+
+
+
+    /* ===== MICROPHONE ===== */
 
     /// <summary>
     /// Immediately sets the default device
@@ -58,6 +102,8 @@ public class MicrophoneHandler : MonoBehaviour
         int freq = -1;
         Microphone.GetDeviceCaps(this.Device, out _, out freq);
         this._audioClip = Microphone.Start(this.Device, false, (int)(this.MaxDuration * 60), freq);
+
+        if (Visual) Visual.SetActive(true);
     }
 
     //private IEnumerator WhileRecording()
@@ -84,6 +130,8 @@ public class MicrophoneHandler : MonoBehaviour
         Microphone.End(this.Device);
         CleanRecording(this._audioClip);
         OnRecordingComplete.Invoke(this._audioClip);
+
+        if (Visual) Visual.SetActive(false);
     }
 
     private void CleanRecording(AudioClip clip)
