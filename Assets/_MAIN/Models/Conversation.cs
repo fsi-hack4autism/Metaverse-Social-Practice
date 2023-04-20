@@ -12,14 +12,17 @@ using UnityEngine.Events;
 
 public class Conversation : MonoBehaviour
 {
-    // This example requires environment variables named "SPEECH_KEY" and "SPEECH_REGION"
-    const string speechKey = Environment.GetEnvironmentVariable("SPEECH_KEY");
-    const string speechRegion = Environment.GetEnvironmentVariable("SPEECH_REGION");
+    readonly string speechKey = Environment.GetEnvironmentVariable("SPEECH_KEY");
+    readonly string speechRegion = Environment.GetEnvironmentVariable("SPEECH_REGION");
 
     public UnityEvent<(byte[], string)> OnAudioReceived = new UnityEvent<(byte[], string)>();
+    public UnityEvent<string> OnTextReceived = new UnityEvent<string>();
+    public UnityEvent<string> OnAssessmentReceived = new UnityEvent<string>();
 
-    private byte[] returnFromAzure = new byte[0];
     private string visemesFromAzure = "";
+    private byte[] audioFromAzure = new byte[0];
+    private string textFromChat = "";
+    private string assessment = "";
 
     // Start is called before the first frame update
     void Start()
@@ -30,13 +33,24 @@ public class Conversation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (returnFromAzure.Length > 0 && !visemesFromAzure.Equals(""))
+        if (audioFromAzure.Length > 0 && !visemesFromAzure.Equals(""))
         {
-            OnAudioReceived.Invoke((returnFromAzure, visemesFromAzure));
-            returnFromAzure = new byte[0];
+            OnAudioReceived.Invoke((audioFromAzure, visemesFromAzure));
+            audioFromAzure = new byte[0];
             visemesFromAzure = "";
         }
+        
+        if (textFromChat.Length > 0)
+        {
+            OnTextReceived.Invoke(textFromChat);
+            textFromChat = "";
+        }
 
+        if (assessment.Length > 0)
+        {
+            OnAssessmentReceived.Invoke(assessment);
+            assessment = "";
+        }
     }
 
     async void TextToSpeech(string text)
@@ -55,21 +69,32 @@ public class Conversation : MonoBehaviour
 
             // Get text from the console and synthesize to the default speaker.
             SpeechSynthesisResult speechResult = await speechSynthesizer.SpeakTextAsync(text);
-            returnFromAzure = speechResult.AudioData;
+            audioFromAzure = speechResult.AudioData;
         }
     }
 
-    string SpeechToText(byte[] speech)
+    async void SpeechToText(byte[] speech)
     {
-        return "hi";
+        var speechConfig = SpeechConfig.FromSubscription(speechKey, speechRegion);
+
+        // The language of the voice that speaks.
+        speechConfig.SpeechSynthesisVoiceName = "en-US-JennyNeural";
+        speechConfig.SpeechRecognitionLanguage = "en-US";
+        using var audioConfig = AudioConfig.FromDefaultMicrophoneInput();
+
+        using (var speechRecognizer = new SpeechRecognizer(speechConfig, audioConfig))
+        {
+            var speechRecognitionResult = await speechRecognizer.RecognizeOnceAsync();
+            textFromChat = speechRecognitionResult.Text;
+        }
     }
 
-    string ChatUp(string userInput)
+    async void ChatUp(string userInput)
     {
         return "what's your name?";
     }
 
-    float grade(string input)
+    async void Assess(string input)
     {
         return 0.5F;
     }
