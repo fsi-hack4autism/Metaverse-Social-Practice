@@ -9,6 +9,7 @@ public class MicrophoneHandler : MonoBehaviour
 {
     private AudioClip _audioClip;
     private bool _isRecording;
+    private float _startTime;
     public string Device { get; private set; }
     public bool isRecording
     {
@@ -96,6 +97,7 @@ public class MicrophoneHandler : MonoBehaviour
     {
         if (this._isRecording) return;
         this._isRecording = true;
+        this._startTime = Time.time;
 
         int _;
         int freq = -1;
@@ -109,9 +111,10 @@ public class MicrophoneHandler : MonoBehaviour
     {
         if (!this._isRecording) return;
         this._isRecording = false;
+        float stopTime = Time.time;
 
         Microphone.End(this.Device);
-        CleanRecording(this._audioClip);
+        CleanRecording(this._audioClip, stopTime - this._startTime);
         GetComponent<SpeechToTextHandler>().Convert(this._audioClip);
 
         if (Visual) Visual.SetActive(false);
@@ -121,7 +124,7 @@ public class MicrophoneHandler : MonoBehaviour
     /// Trims silence
     /// </summary>
     /// <param name="clip"></param>
-    private void CleanRecording(AudioClip clip)
+    private void CleanRecording(AudioClip clip, float duration)
     {
         float threshold = 0.001f;
         int endIndex = -1;
