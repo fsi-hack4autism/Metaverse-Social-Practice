@@ -18,7 +18,7 @@ public class MicrophoneHandler : MonoBehaviour
     public float MaxDuration = 10;
     public GameObject Visual;
 
-    public UnityEvent<AudioClip> OnRecordingComplete = new UnityEvent<AudioClip>();
+    public UnityEvent<string> OnUserComment = new UnityEvent<string>();
 
 
     private MicrophoneControls input = null;
@@ -129,7 +129,7 @@ public class MicrophoneHandler : MonoBehaviour
 
         Microphone.End(this.Device);
         CleanRecording(this._audioClip);
-        OnRecordingComplete.Invoke(this._audioClip);
+        StartCoroutine(SpeechToText(this._audioClip));
 
         if (Visual) Visual.SetActive(false);
     }
@@ -145,5 +145,10 @@ public class MicrophoneHandler : MonoBehaviour
         var source = this.gameObject.AddComponent<AudioSource>();
         source.clip = clip;
         source.Play();
+    }
+
+    private IEnumerator SpeechToText(AudioClip audio)
+    {
+        yield break;
     }
 }
