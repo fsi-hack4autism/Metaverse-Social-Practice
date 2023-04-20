@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+[RequireComponent(typeof(Streamer), typeof(AudioSource))]
 public class Persona : MonoBehaviour
 {
     [SerializeField] private string _preprompt;
@@ -24,5 +25,10 @@ public class Persona : MonoBehaviour
         // TODO: play audio from Azure TTS
 
         // TODO: play visemes from Azure TTS
+    }
+
+    public void Speak(AudioClip audio, Streamer.Viseme[] visemes)
+    {
+
     }
 }
