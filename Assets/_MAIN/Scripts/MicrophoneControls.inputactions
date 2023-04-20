@@ -1,0 +1,45 @@
+{
+    "name": "MicrophoneControls",
+    "maps": [
+        {
+            "name": "Microphone",
+            "id": "416dc700-6986-4b6a-887b-82a47c71c9a0",
+            "actions": [
+                {
+                    "name": "Record",
+                    "type": "Button",
+                    "id": "418e77fe-64ee-446f-a255-7aa6d718d18c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "d483c4f8-9b06-438e-8194-3597a5c9d591",
+                    "path": "<Keyboard>/space",
+                    "interactions": "Press(behavior=2)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Record",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "48657a49-834d-4bf7-823e-27acc4d171e1",
+                    "path": "<XRController>{RightHand}/primaryButton",
+                    "interactions": "Press(behavior=2)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Record",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
