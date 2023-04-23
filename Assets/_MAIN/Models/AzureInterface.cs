@@ -13,11 +13,10 @@ using UnityEngine.Events;
 public class AzureInterface : MonoBehaviour
 {
     public int AudioSampleRate = 16000;
-    private string speechKey;
-    private string speechRegion;
 
-    public UnityEvent<VisemedAudio> OnAudioReceived = new UnityEvent<VisemedAudio>();
     public UnityEvent<string> OnAudioTranscribed = new UnityEvent<string>();
+    public UnityEvent<string> OnChatMessageReceived = new UnityEvent<string>();
+    public UnityEvent<VisemedAudio> OnAudioReceived = new UnityEvent<VisemedAudio>();
     public UnityEvent<string> OnAssessmentReceived = new UnityEvent<string>();
 
     // ==========	THREADING QUEUES	==========
@@ -48,8 +47,6 @@ public class AzureInterface : MonoBehaviour
 
     private void OnEnable()
     {
-        speechKey = env.Get("SPEECH_KEY");
-        speechRegion = env.Get("SPEECH_REGION");
         input.Enable();
         input.Microphone.Record.performed += Record_performed;
     }
@@ -108,7 +105,7 @@ public class AzureInterface : MonoBehaviour
     public async void TextToSpeech(string text, string voice = "en-US-JennyNeural", System.Action<VisemedAudio> callback = null)
     {
         var stream = Microsoft.CognitiveServices.Speech.Audio.AudioOutputStream.CreatePullStream();
-        var speechConfig = SpeechConfig.FromSubscription(speechKey, speechRegion);
+        var speechConfig = SpeechConfig.FromSubscription(env.Get("SPEECH_KEY"), env.Get("SPEECH_REGION"));
         var audioConfig = AudioConfig.FromStreamOutput(stream);
 
         // The language of the voice that speaks.
@@ -155,7 +152,7 @@ public class AzureInterface : MonoBehaviour
 
     public async void SpeechToText()
     {
-        var speechConfig = SpeechConfig.FromSubscription(speechKey, speechRegion);
+        var speechConfig = SpeechConfig.FromSubscription(env.Get("SPEECH_KEY"), env.Get("SPEECH_REGION"));
         using var audioConfig = AudioConfig.FromDefaultMicrophoneInput();
 
         using (var speechRecognizer = new SpeechRecognizer(speechConfig, audioConfig))
@@ -165,14 +162,70 @@ public class AzureInterface : MonoBehaviour
         }
     }
 
-    async void ChatUp(string userInput)
+    public void SendToChatbot(string userInput, Persona.ConversationComment[] conversation)
     {
-        // return "what's your name?";
+        StartCoroutine(impl_SendToChatbot(userInput, conversation));
+    }
+
+    public IEnumerator impl_SendToChatbot(string userInput, Persona.ConversationComment[] conversation)
+    {
+        UnityWebRequest req = new UnityWebRequest(env.Get("OPENAI_URL"), "POST");
+        req.SetRequestHeader("Authorization", $"Bearer {env.Get("OPENAI_KEY")}");
+        req.SetRequestHeader("Content-Type", "application/json");
+
+        // build body
+        OpenAIBody body = new OpenAIBody();
+        body.model = "gpt-3.5-turbo";
+        body.messages = conversation;
+        string json = JsonUtility.ToJson(body);
+        Debug.Log($"[AzureInterface] ({body.model}) Sending: {json}");
+        byte[] bodyRaw = Encoding.UTF8.GetBytes(json);
+
+        // send request
+        req.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        req.downloadHandler = new DownloadHandlerBuffer();
+        yield return req.SendWebRequest();
+
+        // handle response
+        if (req.responseCode == 200)
+        {
+            string response = req.downloadHandler.text;
+            Debug.Log(response);
+            OpenAIResponse openAIResponse = JsonUtility.FromJson<OpenAIResponse>(response);
+            OnChatMessageReceived.Invoke(openAIResponse.choices[0].message.content); // invoke event
+        }
+        else
+        {
+            Debug.Log(req.error);
+        }
     }
 
     public async void Assess(string input)
     {
         // return 0.5f;
+    }
+
+    [System.Serializable]
+    public struct OpenAIBody
+    {
+        public string model;
+        public Persona.ConversationComment[] messages;
+    }
+
+    [System.Serializable]
+    public struct OpenAIResponse
+    {
+        public string id;
+        public long created;
+        public OpenAIChoice[] choices;
+    }
+
+    [System.Serializable]
+    public struct OpenAIChoice
+    {
+        public int index;
+        public Persona.ConversationComment message;
+        public string finish_reason;
     }
 }
 

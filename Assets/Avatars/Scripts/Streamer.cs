@@ -178,7 +178,7 @@ public class Streamer : MonoBehaviour
             if (BlendShapeMap.ContainsKey(this.skinnedMeshRends["body"].sharedMesh.GetBlendShapeName(i)))
             {
                 BlendShapeMap[this.skinnedMeshRends["body"].sharedMesh.GetBlendShapeName(i)] = i;
-                Debug.LogWarning($"[Streamer] Duplicate blendshape name: {this.skinnedMeshRends["body"].sharedMesh.GetBlendShapeName(i)}. Overwriting...");
+                // Debug.LogWarning($"[Streamer] Duplicate blendshape name: {this.skinnedMeshRends["body"].sharedMesh.GetBlendShapeName(i)}. Overwriting...");
             }
             else
                 BlendShapeMap.Add(this.skinnedMeshRends["body"].sharedMesh.GetBlendShapeName(i), i);

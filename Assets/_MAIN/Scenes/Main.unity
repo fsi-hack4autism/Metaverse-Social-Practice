@@ -230,6 +230,61 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &288718280
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 288718281}
+  - component: {fileID: 288718283}
+  - component: {fileID: 288718282}
+  m_Layer: 31
+  m_Name: Teleport Plane
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &288718281
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288718280}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 1127653793}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!64 &288718282
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288718280}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!33 &288718283
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288718280}
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &399851958
 GameObject:
   m_ObjectHideFlags: 0
@@ -856,6 +911,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1353593442}
+  - {fileID: 288718281}
   m_Father: {fileID: 2080393343}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1883,11 +1939,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbab420ddc7144eeeaa241eb591428e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _preprompt: 
+  Preprompt: Pretend you are an 18 year old woman named Yiwan at a party alone and
+    someone comes up to talk to you. You are extremely bored and standoff-ish. You
+    don't want to talk to anyone or be at the party right now
+  Voice: en-US-AriaNeural
+  Greeting: Hey, what's up? I'm {name}
+  Role: assistant
   _audioSource: {fileID: 1860237419}
   _azure: {fileID: 1860237422}
   Results: {fileID: 1506505602}
-  Greeting: Hey, what's up? I'm {name}
   OnApproach:
     m_PersistentCalls:
       m_Calls:
@@ -2071,18 +2131,18 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1860237415}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5141f6d9e6d19c948a0fac51ade68087, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   AudioSampleRate: 16000
-  OnAudioReceived:
+  OnAudioTranscribed:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1860237418}
         m_TargetAssemblyTypeName: Persona, Assembly-CSharp
-        m_MethodName: Speak
+        m_MethodName: RespondTo
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2092,12 +2152,15 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  OnAudioTranscribed:
+  OnChatMessageReceived:
+    m_PersistentCalls:
+      m_Calls: []
+  OnAudioReceived:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1860237418}
         m_TargetAssemblyTypeName: Persona, Assembly-CSharp
-        m_MethodName: RespondTo
+        m_MethodName: Speak
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2462,11 +2525,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbab420ddc7144eeeaa241eb591428e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _preprompt: 
+  Preprompt: Pretend you are an 18 year old woman name Wanyi at a party alone and
+    someone comes up to talk to you. You really want to talk about politics and will
+    try to veer the conversation in that direction.
+  Voice: en-US-JennyNeural
+  Greeting: Hello, I'm {name}
+  Role: assistant
   _audioSource: {fileID: 2097604456}
   _azure: {fileID: 2097604460}
   Results: {fileID: 146165685}
-  Greeting: Hello, I'm {name}
   OnApproach:
     m_PersistentCalls:
       m_Calls:
@@ -2670,18 +2737,18 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2097604453}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5141f6d9e6d19c948a0fac51ade68087, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   AudioSampleRate: 16000
-  OnAudioReceived:
+  OnAudioTranscribed:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2097604455}
         m_TargetAssemblyTypeName: Persona, Assembly-CSharp
-        m_MethodName: Speak
+        m_MethodName: RespondTo
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2691,12 +2758,27 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  OnAudioTranscribed:
+  OnChatMessageReceived:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2097604455}
         m_TargetAssemblyTypeName: Persona, Assembly-CSharp
-        m_MethodName: RespondTo
+        m_MethodName: HandleChatbotResponse
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnAudioReceived:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2097604455}
+        m_TargetAssemblyTypeName: Persona, Assembly-CSharp
+        m_MethodName: Speak
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
