@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.soupday.cc3_unity_tools": "https://github.com/soupday/cc_unity_tools_URP.git",
     "com.unity.cinemachine": "2.8.9",
     "com.unity.ide.rider": "3.0.18",
     "com.unity.ide.visualstudio": "2.0.17",
