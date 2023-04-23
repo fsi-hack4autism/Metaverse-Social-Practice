@@ -156,7 +156,7 @@ Transform:
   - {fileID: 1831467612}
   - {fileID: 2142953922}
   m_Father: {fileID: 1231368247}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &146165687
 MonoBehaviour:
@@ -638,7 +638,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1231368247}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &834792340
 MonoBehaviour:
@@ -989,7 +989,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1559133135}
   - {fileID: 834792339}
   - {fileID: 146165686}
   - {fileID: 1506505605}
@@ -1224,7 +1223,7 @@ Transform:
   - {fileID: 399851959}
   - {fileID: 1201201405}
   m_Father: {fileID: 1231368247}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1514300294
 GameObject:
@@ -1455,97 +1454,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1519989334}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1559133134
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1559133135}
-  - component: {fileID: 1559133136}
-  - component: {fileID: 1559133137}
-  - component: {fileID: 1559133138}
-  m_Layer: 0
-  m_Name: Microphone
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1559133135
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1559133134}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1231368247}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1559133136
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1559133134}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c78ccd273a1084532bde325fd7fdb900, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MaxDuration: 0.5
-  Visual: {fileID: 0}
---- !u!114 &1559133137
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1559133134}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a1ed5643c8044d6fbab08453bc32d04, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Url: 
-  Key: 
-  OnText:
-    m_PersistentCalls:
-      m_Calls: []
-  OnError:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &1559133138
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1559133134}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3562f2d4eb78b4b47a17352e961a5e6a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AudioSampleRate: 16000
-  OnAudioReceived:
-    m_PersistentCalls:
-      m_Calls: []
-  OnTextReceived:
-    m_PersistentCalls:
-      m_Calls: []
-  OnAssessmentReceived:
-    m_PersistentCalls:
-      m_Calls: []
-  textFromChat: 
 --- !u!1 &1577377670
 GameObject:
   m_ObjectHideFlags: 0
@@ -1977,7 +1885,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _preprompt: 
   _audioSource: {fileID: 1860237419}
-  _conversation: {fileID: 1559133138}
+  _azure: {fileID: 1860237422}
   Results: {fileID: 1506505602}
   Greeting: Hey, what's up? I'm {name}
   OnApproach:
@@ -2007,6 +1915,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1860237422}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   OnExit:
     m_PersistentCalls:
       m_Calls:
@@ -2021,6 +1941,18 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1860237422}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
         m_CallState: 2
 --- !u!82 &1860237419
 AudioSource:
@@ -2132,6 +2064,52 @@ CapsuleCollider:
   m_Height: 3
   m_Direction: 1
   m_Center: {x: 0, y: 1.35, z: 0}
+--- !u!114 &1860237422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1860237415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5141f6d9e6d19c948a0fac51ade68087, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AudioSampleRate: 16000
+  OnAudioReceived:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1860237418}
+        m_TargetAssemblyTypeName: Persona, Assembly-CSharp
+        m_MethodName: Speak
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnAudioTranscribed:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1860237418}
+        m_TargetAssemblyTypeName: Persona, Assembly-CSharp
+        m_MethodName: RespondTo
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnAssessmentReceived:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &1911887015
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2486,7 +2464,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _preprompt: 
   _audioSource: {fileID: 2097604456}
-  _conversation: {fileID: 1559133138}
+  _azure: {fileID: 2097604460}
   Results: {fileID: 146165685}
   Greeting: Hello, I'm {name}
   OnApproach:
@@ -2516,6 +2494,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 2097604460}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   OnExit:
     m_PersistentCalls:
       m_Calls:
@@ -2530,6 +2520,18 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 2097604460}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
         m_CallState: 2
 --- !u!82 &2097604456
 AudioSource:
@@ -2661,6 +2663,52 @@ MonoBehaviour:
     type: 3}
   newTalkAnimation: {fileID: 49149521555298446, guid: f8bab36f6ba50924aa2738458e0ae75b,
     type: 3}
+--- !u!114 &2097604460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2097604453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5141f6d9e6d19c948a0fac51ade68087, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AudioSampleRate: 16000
+  OnAudioReceived:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2097604455}
+        m_TargetAssemblyTypeName: Persona, Assembly-CSharp
+        m_MethodName: Speak
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnAudioTranscribed:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2097604455}
+        m_TargetAssemblyTypeName: Persona, Assembly-CSharp
+        m_MethodName: RespondTo
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnAssessmentReceived:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &2142953921
 GameObject:
   m_ObjectHideFlags: 0

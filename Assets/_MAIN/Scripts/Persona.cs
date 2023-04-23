@@ -7,17 +7,28 @@ using UnityEngine.Events;
 public class Persona : MonoBehaviour
 {
     [SerializeField] private string _preprompt;
+    public string Greeting = "Hello, I'm {name}";
+    private List<ConversationComment> Conversation;
+
+
     [SerializeField] private AudioSource _audioSource;
-    [SerializeField] private Conversation _conversation;
+    [SerializeField] private AzureInterface _azure;
 
     public GameObject Results;
 
-    public string Greeting = "Hello, I'm {name}";
     public UnityEvent OnApproach = new UnityEvent();
     public UnityEvent OnExit = new UnityEvent();
 
     public void RespondTo(string message)
     {
+        // add user comment to conversation
+        this.Conversation.Add(new ConversationComment()
+        {
+            speaker = ConversationComment.Speaker.User,
+            persona = this,
+            text = message
+        });
+
         StartCoroutine(impl_RespondTo(message));
     }
 
@@ -26,6 +37,7 @@ public class Persona : MonoBehaviour
         yield break;
 
         // TODO: send message to ChatGPT
+
 
         // TODO: send text response from ChatGPT to Azure TTS
 
@@ -68,6 +80,9 @@ public class Persona : MonoBehaviour
 
     private IEnumerator BeginConversation(Transform player)
     {
+        // reset conversation
+        this.Conversation = new List<ConversationComment>();
+
         // face user
         float duration = 1f;
         float startTime = Time.time;
@@ -80,13 +95,36 @@ public class Persona : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
 
-        // play audio
-        _conversation.TextToSpeech(Greeting.Replace("{name}", this.name), callback: Speak);
+        // initiate conversation
+        _azure.TextToSpeech(Greeting.Replace("{name}", this.name));
+        this.Conversation.Add(new ConversationComment()
+        {
+            speaker = ConversationComment.Speaker.Persona,
+            persona = this,
+            text = Greeting.Replace("{name}", this.name)
+        });
     }
 
     private IEnumerator EndConversation()
     {
         Results.SetActive(true);
         yield return null;
+    }
+
+
+    /// <summary>
+    /// A comment made by a user/persona in a conversation
+    /// </summary>
+    [System.Serializable]
+    public struct ConversationComment
+    {
+        public enum Speaker
+        {
+            User,
+            Persona
+        }
+        public Speaker speaker;
+        public Persona persona;
+        public string text;
     }
 }

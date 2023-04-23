@@ -10,14 +10,14 @@ using Microsoft.CognitiveServices.Speech;
 using Microsoft.CognitiveServices.Speech.Audio;
 using UnityEngine.Events;
 
-public class Conversation : MonoBehaviour
+public class AzureInterface : MonoBehaviour
 {
     public int AudioSampleRate = 16000;
     private string speechKey;
     private string speechRegion;
 
     public UnityEvent<VisemedAudio> OnAudioReceived = new UnityEvent<VisemedAudio>();
-    public UnityEvent<string> OnTextReceived = new UnityEvent<string>();
+    public UnityEvent<string> OnAudioTranscribed = new UnityEvent<string>();
     public UnityEvent<string> OnAssessmentReceived = new UnityEvent<string>();
 
     // ==========	THREADING QUEUES	==========
@@ -30,14 +30,47 @@ public class Conversation : MonoBehaviour
     private Queue<VisemedAudio> _visemedAudioQueue = new Queue<VisemedAudio>();
     private object _visemedAudioQueueLock = new object();
 
-    [SerializeField] private string textFromChat = "";
-    private string assessment = "";
+    private string _transcription = "";
+    private string _assessment = "";
 
-    // Start is called before the first frame update
-    void OnEnable()
+
+    // ==========	INPUT HANDLING	==========
+
+    private MicrophoneControls input = null;
+
+    private void Awake()
+    {
+        input = new MicrophoneControls();
+    }
+
+
+    /* ===== INPUT ===== */
+
+    private void OnEnable()
     {
         speechKey = env.Get("SPEECH_KEY");
         speechRegion = env.Get("SPEECH_REGION");
+        input.Enable();
+        input.Microphone.Record.performed += Record_performed;
+    }
+
+    private void OnDisable()
+    {
+        input.Disable();
+        input.Microphone.Record.performed -= Record_performed;
+    }
+
+    private void Record_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        bool value = obj.ReadValueAsButton();
+        Debug.Log(value);
+        if (value)
+        {
+            SpeechToText();
+        }
+        else
+        {
+        }
     }
 
     // Update is called once per frame
@@ -59,16 +92,16 @@ public class Conversation : MonoBehaviour
             }
         }
 
-        if (textFromChat.Length > 0)
+        if (_transcription.Length > 0)
         {
-            OnTextReceived.Invoke(textFromChat);
-            textFromChat = "";
+            OnAudioTranscribed.Invoke(_transcription);
+            _transcription = "";
         }
 
-        if (assessment.Length > 0)
+        if (_assessment.Length > 0)
         {
-            OnAssessmentReceived.Invoke(assessment);
-            assessment = "";
+            OnAssessmentReceived.Invoke(_assessment);
+            _assessment = "";
         }
     }
 
@@ -120,19 +153,15 @@ public class Conversation : MonoBehaviour
         }
     }
 
-    async void SpeechToText(byte[] speech)
+    public async void SpeechToText()
     {
         var speechConfig = SpeechConfig.FromSubscription(speechKey, speechRegion);
-
-        // The language of the voice that speaks.
-        speechConfig.SpeechSynthesisVoiceName = "en-US-JennyNeural";
-        speechConfig.SpeechRecognitionLanguage = "en-US";
         using var audioConfig = AudioConfig.FromDefaultMicrophoneInput();
 
         using (var speechRecognizer = new SpeechRecognizer(speechConfig, audioConfig))
         {
             var speechRecognitionResult = await speechRecognizer.RecognizeOnceAsync();
-            textFromChat = speechRecognitionResult.Text;
+            _transcription = speechRecognitionResult.Text;
         }
     }
 
@@ -141,90 +170,9 @@ public class Conversation : MonoBehaviour
         // return "what's your name?";
     }
 
-    async void Assess(string input)
+    public async void Assess(string input)
     {
         // return 0.5f;
     }
-
-    void OutputSpeechSynthesisResult(SpeechSynthesisResult speechSynthesisResult)
-    {
-        switch (speechSynthesisResult.Reason)
-        {
-            case ResultReason.SynthesizingAudioCompleted:
-                break;
-            case ResultReason.Canceled:
-                var cancellation = SpeechSynthesisCancellationDetails.FromResult(speechSynthesisResult);
-                Console.WriteLine($"CANCELED: Reason={cancellation.Reason}");
-
-                if (cancellation.Reason == CancellationReason.Error)
-                {
-                    Console.WriteLine($"CANCELED: ErrorCode={cancellation.ErrorCode}");
-                    Console.WriteLine($"CANCELED: ErrorDetails=[{cancellation.ErrorDetails}]");
-                    Console.WriteLine($"CANCELED: Did you set the speech resource key and region values?");
-                }
-                break;
-            default:
-                break;
-        }
-    }
-
-
-    IEnumerator postUnityWebRequest(string url)
-    {
-        ///<summary>
-        /// Post using UnityWebRequest class
-        /// </summary>
-        var jsonString = "{\"Id\":3,\"Name\":\"Roy\"}";
-        byte[] byteData = System.Text.Encoding.ASCII.GetBytes(jsonString.ToCharArray());
-
-        UnityWebRequest unityWebRequest = new UnityWebRequest(url, "POST");
-        unityWebRequest.uploadHandler = new UploadHandlerRaw(byteData);
-        unityWebRequest.SetRequestHeader("Content-Type", "application/json");
-        yield return unityWebRequest.SendWebRequest();
-
-        if (unityWebRequest.responseCode != 200)
-        {
-            Debug.Log("Error: " + unityWebRequest.responseCode);
-        }
-        else
-        {
-            Debug.Log("Form upload complete! Status Code: " + unityWebRequest.responseCode);
-        }
-    }
-    /*
-async Task Converse()
-{
-    var speechConfig = SpeechConfig.FromSubscription(speechKey, speechRegion);
-
-    // The language of the voice that speaks.
-    speechConfig.SpeechSynthesisVoiceName = "en-US-JennyNeural";
-
-    using (var speechSynthesizer = new SpeechSynthesizer(speechConfig))
-    {
-        speechSynthesizer.VisemeReceived += (s, e) =>
-        {
-            Console.WriteLine($"Viseme event received. Audio offset: " + $"{e.AudioOffset / 10000}ms, viseme id: {e.VisemeId}.");
-            var animation = e.Animation;
-        };
-
-
-        string text = "";
-
-        while (text != "bye")
-        {
-            // Get text from the console and synthesize to the default speaker.
-            Console.WriteLine("Enter some text that you want to speak >");
-            text = Console.ReadLine();
-
-            var speechResult = await speechSynthesizer.SpeakTextAsync(text);
-            var visemeResult = await speechSynthesizer.SpeakSsmlAsync(text);
-            OutputSpeechSynthesisResult(speechResult, text);
-        }
-    }
-
-    Console.WriteLine("Press any key to exit...");
-    Console.ReadKey();
-}
-    */
 }
 
