@@ -8,10 +8,11 @@ public class Persona : MonoBehaviour
 {
     [SerializeField] private string _preprompt;
     [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private Conversation _conversation;
 
-    public WozHandler.Response Greeting;
     public GameObject Results;
 
+    public string Greeting = "Hello, I'm {name}";
     public UnityEvent OnApproach = new UnityEvent();
     public UnityEvent OnExit = new UnityEvent();
 
@@ -33,8 +34,14 @@ public class Persona : MonoBehaviour
         // TODO: play visemes from Azure TTS
     }
 
+    public void Speak(VisemedAudio audio)
+    {
+        Speak(audio.audio, audio.visemes);
+    }
+
     public void Speak(AudioClip audio, Streamer.Viseme[] visemes)
     {
+        Debug.Log($"[Persona] Speaking {audio.name}");
         var audioSource = GetComponent<AudioSource>();
         audioSource.clip = audio;
         audioSource.Play();
@@ -73,10 +80,8 @@ public class Persona : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
 
-
         // play audio
-        Greeting.LoadVisemeFile();
-        Speak(Greeting.audio, Greeting.visemes);
+        _conversation.TextToSpeech(Greeting.Replace("{name}", this.name), callback: Speak);
     }
 
     private IEnumerator EndConversation()

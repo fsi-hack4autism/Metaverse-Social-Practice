@@ -12,32 +12,51 @@ using UnityEngine.Events;
 
 public class Conversation : MonoBehaviour
 {
-    readonly string speechKey = Environment.GetEnvironmentVariable("SPEECH_KEY");
-    readonly string speechRegion = Environment.GetEnvironmentVariable("SPEECH_REGION");
+    public int AudioSampleRate = 16000;
+    private string speechKey;
+    private string speechRegion;
 
-    public UnityEvent<(byte[], string)> OnAudioReceived = new UnityEvent<(byte[], string)>();
+    public UnityEvent<VisemedAudio> OnAudioReceived = new UnityEvent<VisemedAudio>();
     public UnityEvent<string> OnTextReceived = new UnityEvent<string>();
     public UnityEvent<string> OnAssessmentReceived = new UnityEvent<string>();
 
-    private string visemesFromAzure = "";
-    private byte[] audioFromAzure = new byte[0];
-    private string textFromChat = "";
+    // ==========	THREADING QUEUES	==========
+    // Unity isn't thread safe, so we need to use a queue
+    // to handle events and callbacks from the speech service
+
+    private Queue<System.Action> _callbackQueue = new Queue<System.Action>();
+    private object _callbackQueueLock = new object();
+
+    private Queue<VisemedAudio> _visemedAudioQueue = new Queue<VisemedAudio>();
+    private object _visemedAudioQueueLock = new object();
+
+    [SerializeField] private string textFromChat = "";
     private string assessment = "";
 
     // Start is called before the first frame update
-    void Start()
+    void OnEnable()
     {
-        TextToSpeech("hello there");
+        speechKey = env.Get("SPEECH_KEY");
+        speechRegion = env.Get("SPEECH_REGION");
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (audioFromAzure.Length > 0 && !visemesFromAzure.Equals(""))
+        if (_visemedAudioQueue.Count > 0)
         {
-            OnAudioReceived.Invoke((audioFromAzure, visemesFromAzure));
-            audioFromAzure = new byte[0];
-            visemesFromAzure = "";
+            lock (_visemedAudioQueueLock)
+            {
+                OnAudioReceived.Invoke(_visemedAudioQueue.Dequeue());
+            }
+        }
+
+        if (_callbackQueue.Count > 0)
+        {
+            lock (_callbackQueueLock)
+            {
+                _callbackQueue.Dequeue().Invoke();
+            }
         }
 
         if (textFromChat.Length > 0)
@@ -53,23 +72,51 @@ public class Conversation : MonoBehaviour
         }
     }
 
-    async void TextToSpeech(string text)
+    public async void TextToSpeech(string text, string voice = "en-US-JennyNeural", System.Action<VisemedAudio> callback = null)
     {
+        var stream = Microsoft.CognitiveServices.Speech.Audio.AudioOutputStream.CreatePullStream();
         var speechConfig = SpeechConfig.FromSubscription(speechKey, speechRegion);
+        var audioConfig = AudioConfig.FromStreamOutput(stream);
 
         // The language of the voice that speaks.
-        speechConfig.SpeechSynthesisVoiceName = "en-US-JennyNeural";
+        speechConfig.SpeechSynthesisVoiceName = voice;
 
-        using (var speechSynthesizer = new SpeechSynthesizer(speechConfig))
+        using (var speechSynthesizer = new SpeechSynthesizer(speechConfig, audioConfig))
         {
+            string visemesFromAzure = "";
+            byte[] audioFromAzure = new byte[0];
+
             speechSynthesizer.VisemeReceived += (s, e) =>
             {
-                visemesFromAzure = e.Animation;
+                visemesFromAzure += $"time: {e.AudioOffset / 10000}ms, viseme id: {e.VisemeId}.\n";
+            };
+            speechSynthesizer.SynthesisCompleted += (s, e) =>
+            {
+                audioFromAzure = e.Result.AudioData;
             };
 
-            // Get text from the console and synthesize to the default speaker.
+            // Perform synthesis.
             SpeechSynthesisResult speechResult = await speechSynthesizer.SpeakTextAsync(text);
-            audioFromAzure = speechResult.AudioData;
+            stream.Dispose();
+
+            // convert to visemed audio and add to queue
+            VisemedAudio visemedAudio = new VisemedAudio();
+            visemedAudio.LoadAudio(audioFromAzure, 1, AudioSampleRate);
+            visemedAudio.LoadRawVisemes(visemesFromAzure);
+            visemedAudio.audio.name = text;
+            lock (_visemedAudioQueueLock)
+            {
+                _visemedAudioQueue.Enqueue(visemedAudio);
+            }
+
+            // invoke callback
+            if (callback != null)
+            {
+                lock (_callbackQueueLock)
+                {
+                    _callbackQueue.Enqueue(() => callback.Invoke(visemedAudio));
+                }
+            }
         }
     }
 
@@ -133,11 +180,11 @@ public class Conversation : MonoBehaviour
         UnityWebRequest unityWebRequest = new UnityWebRequest(url, "POST");
         unityWebRequest.uploadHandler = new UploadHandlerRaw(byteData);
         unityWebRequest.SetRequestHeader("Content-Type", "application/json");
-        yield return unityWebRequest.Send();
+        yield return unityWebRequest.SendWebRequest();
 
-        if (unityWebRequest.isNetworkError || unityWebRequest.isHttpError)
+        if (unityWebRequest.responseCode != 200)
         {
-            Debug.Log(unityWebRequest.error);
+            Debug.Log("Error: " + unityWebRequest.responseCode);
         }
         else
         {

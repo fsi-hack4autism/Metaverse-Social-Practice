@@ -115,7 +115,8 @@ public class MicrophoneHandler : MonoBehaviour
 
         Microphone.End(this.Device);
         CleanRecording(this._audioClip, stopTime - this._startTime);
-        GetComponent<SpeechToTextHandler>().Convert(this._audioClip);
+        // GetComponent<SpeechToTextHandler>().Convert(this._audioClip);
+        // GetComponent<Conversation>()
 
         if (Visual) Visual.SetActive(false);
     }
