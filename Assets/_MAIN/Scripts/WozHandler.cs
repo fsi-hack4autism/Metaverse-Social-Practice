@@ -7,7 +7,6 @@ using System.Linq;
 public class WozHandler : MonoBehaviour
 {
     [SerializeField] private Response[] Responses;
-    [SerializeField] private Persona Character;
     private int _index = -1;
     private MicrophoneControls _input = null;
 
