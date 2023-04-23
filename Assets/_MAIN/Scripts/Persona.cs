@@ -9,7 +9,7 @@ public class Persona : MonoBehaviour
     [SerializeField] private string _preprompt;
     [SerializeField] private AudioSource _audioSource;
 
-    public AudioClip Greeting;
+    public WozHandler.Response Greeting;
     public GameObject Results;
 
     public UnityEvent OnApproach = new UnityEvent();
@@ -75,7 +75,8 @@ public class Persona : MonoBehaviour
 
 
         // play audio
-        Speak(Greeting, new Streamer.Viseme[0]);
+        Greeting.LoadVisemeFile();
+        Speak(Greeting.audio, Greeting.visemes);
     }
 
     private IEnumerator EndConversation()

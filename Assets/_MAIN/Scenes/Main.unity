@@ -669,7 +669,6 @@ MonoBehaviour:
     visemes: []
     visemeFile: visemes5
     source: {fileID: 1860237418}
-  Character: {fileID: 0}
 --- !u!1 &939848939
 GameObject:
   m_ObjectHideFlags: 0
@@ -1941,7 +1940,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _preprompt: 
   _audioSource: {fileID: 1860237419}
-  Greeting: {fileID: 8300000, guid: cb1d06faa9d974dd79fe519100363643, type: 3}
+  Greeting:
+    audio: {fileID: 8300000, guid: cb1d06faa9d974dd79fe519100363643, type: 3}
+    visemes: []
+    visemeFile: visemes1
+    source: {fileID: 0}
   Results: {fileID: 1506505602}
   OnApproach:
     m_PersistentCalls:
@@ -2493,7 +2496,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _preprompt: 
   _audioSource: {fileID: 2097604456}
-  Greeting: {fileID: 8300000, guid: cb1d06faa9d974dd79fe519100363643, type: 3}
+  Greeting:
+    audio: {fileID: 8300000, guid: cb1d06faa9d974dd79fe519100363643, type: 3}
+    visemes: []
+    visemeFile: visemes1
+    source: {fileID: 2097604455}
   Results: {fileID: 146165685}
   OnApproach:
     m_PersistentCalls:

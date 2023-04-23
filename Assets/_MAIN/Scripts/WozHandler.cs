@@ -81,7 +81,7 @@ public class WozHandler : MonoBehaviour
                 var numberMatches = Regex.Matches(line, @"[0-9.]+");
                 //Debug.Log($"[Woz] got {numberMatches.Count} numbers in line");
                 //Debug.Log($"[Woz] {numberMatches[0].Value} and {numberMatches[1].Value}");
-                float time = float.Parse(numberMatches[0].Value);
+                float time = float.Parse(numberMatches[0].Value) / 1000; // convert milliseconds to seconds
                 int viseme = int.Parse(numberMatches[1].Value.Trim('.'));
                 visemes.Add(new Streamer.Viseme()
                 {
