@@ -39,7 +39,7 @@ public class Conversation : MonoBehaviour
             audioFromAzure = new byte[0];
             visemesFromAzure = "";
         }
-        
+
         if (textFromChat.Length > 0)
         {
             OnTextReceived.Invoke(textFromChat);
@@ -91,12 +91,12 @@ public class Conversation : MonoBehaviour
 
     async void ChatUp(string userInput)
     {
-        return "what's your name?";
+        // return "what's your name?";
     }
 
     async void Assess(string input)
     {
-        return 0.5F;
+        // return 0.5f;
     }
 
     void OutputSpeechSynthesisResult(SpeechSynthesisResult speechSynthesisResult)
