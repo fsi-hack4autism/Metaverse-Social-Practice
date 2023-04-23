@@ -76,4 +76,5 @@ crashlytics-build.properties
 /[Aa]ssets/Avatars/Models/Wanyi_Idle/
 Assets/Avatars/Models/Wanyi_Idle.meta
 Assets/Avatars/Models/Wanyi.meta
-Assets/Settings/env.txt
+**/env.txt
+**/env.txt.meta

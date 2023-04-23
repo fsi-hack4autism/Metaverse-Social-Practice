@@ -56,10 +56,6 @@ public class env : MonoBehaviour
                 _localconfig[key] = value;
             }
         }
-
-        Debug.Log($"[env] loaded {_config.Count} keys");
-        Debug.Log($"[env] keys loaded: \n{string.Join("\n", _config.Keys.ToArray())}");
-        Debug.Log($"[env] values loaded: \n{string.Join("\n", _config.Values.ToArray())}");
     }
 
     public static string Get(string key)
