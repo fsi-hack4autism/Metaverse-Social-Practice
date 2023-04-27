@@ -1,0 +1,2 @@
+# Don't sync meta files in this folder because it may cause version conflicts
+*.meta

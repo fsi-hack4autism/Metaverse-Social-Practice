@@ -1,0 +1,31 @@
+WEBVTT
+
+and here
+00:11.000 --> 00:13.000
+<v Roger Bingham>We are in New York City
+
+and here for chapter
+00:13.000 --> 00:16.000
+<v Roger Bingham>We're actually at the Lucern Hotel, just down the street
+and if we have multiple lines here?
+what then? How do we do that
+
+NOTE be careful of noes
+
+another chapter
+00:16.000 --> 00:18.000
+<v Roger Bingham>from the American Museum of Natural History
+eh? you feel?
+
+NOTE asdfklj f
+lkasjdfl
+lkasdjflaksdf
+lkasdjf = asdf
+
+2
+00:18.000 --> 00:20.000
+<v Roger Bingham>And with me is Neil deGrasse Tyson
+
+some chapter
+00:20.000 --> 00:22.000
+<v Roger Bingham>Astrophysicist, Director of the Hayden Planetarium
