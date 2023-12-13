@@ -26,6 +26,11 @@ public class ClickHandler : MonoBehaviour
 
 
 
+    private void OnEnable()
+    {
+        _cooldownTimer = Time.time - Cooldown;
+    }
+
     private void Update()
     {
         // handle cooldown

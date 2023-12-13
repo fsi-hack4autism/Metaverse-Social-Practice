@@ -21,13 +21,13 @@ public class MultiLanguageText : MultiLanguageElement
 
     protected override void HandleLanguageChanged(LanguageManager.Language language)
     {
-        Debug.Log("[MultiLanguageText] HandleLanguageChanged: " + language.ToString() + "\n" + this.Content.Count + " elements");
+        //Debug.Log("[MultiLanguageText] HandleLanguageChanged: " + language.ToString() + "\n" + this.Content.Count + " elements");
         for (int i = 0; i < Content.Count; i++)
         {
             if (Content[i].language == language)
             {
                 currentContent = Content[i];
-                Debug.Log("[MultiLanguageText] HandleLanguageChanged: " + currentContent.GetType());
+                //Debug.Log("[MultiLanguageText] HandleLanguageChanged: " + currentContent.GetType());
                 ApplyElement(currentContent);
                 return;
             }
@@ -36,7 +36,7 @@ public class MultiLanguageText : MultiLanguageElement
 
     override protected void ApplyElement(LanguageManager.LanguageElement element)
     {
-        Debug.Log("ApplyElement: Text - " + element.GetType());
+        //Debug.Log("ApplyElement: Text - " + element.GetType());
         GetComponent<TMP_Text>().text = (element as LanguageManager.LanguageString).text;
     }
 }

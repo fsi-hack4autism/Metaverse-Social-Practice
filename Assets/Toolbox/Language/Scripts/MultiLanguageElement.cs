@@ -9,7 +9,7 @@ public abstract class MultiLanguageElement : MonoBehaviour
     {
         if (LanguageManager.Instance)
         {
-            Debug.Log("[MultiLanguageElement] Awake: " + this.GetType());
+            //Debug.Log("[MultiLanguageElement] Awake: " + this.GetType());
             LanguageManager.Instance.AddElement(this);
             LanguageManager.OnLanguageChanged(HandleLanguageChanged);
             HandleLanguageChanged(LanguageManager.language);
