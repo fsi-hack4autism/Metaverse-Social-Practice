@@ -22,6 +22,11 @@ public class TriggerHandler : MonoBehaviour
         col.isTrigger = true;
     }
 
+    private void OnEnable()
+    {
+        _cooldownTimer = Time.time - Cooldown;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         // handle cooldown

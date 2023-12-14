@@ -212,6 +212,14 @@ public class LanguageManager : MonoBehaviour
     private List<MultiLanguageElement> elements = new List<MultiLanguageElement>();
 
 
+    [System.Runtime.InteropServices.DllImport("__Internal")]
+    private static extern string getSpraoiLoadingData();
+    [System.Runtime.InteropServices.DllImport("__Internal")]
+    private static extern string subscribeToLanguageAndRegionEvents();
+
+    // [DllImport("__Internal")]
+    // private static extern string GetLocale();
+
     private string reg = "us";
     public static string region { get { return Instance.reg; } }
     public UnityEvent<string> onRegionChanged = new UnityEvent<string>();
@@ -221,6 +229,9 @@ public class LanguageManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+#if UNITY_WEBGL && !UNITY_EDITOR
+            subscribeToLanguageAndRegionEvents();
+#endif
         }
         else
         {
@@ -228,12 +239,22 @@ public class LanguageManager : MonoBehaviour
         }
     }
 
-    private void Start()
+    private void OnEnable()
     {
 #if UNITY_WEBGL && !UNITY_EDITOR
-        string locale = GetLocale();
-        System.Enum.TryParse<Language>(locale.Split('-')[0], out this.lang);
-        this.reg = locale.Split('-')[1];
+        // try {
+        //     string windowData = getSpraoiLoadingData();
+        //     WindowSpraoi loadingPageData = JsonUtility.FromJson<WindowSpraoi>(windowData);
+        //     System.Enum.TryParse<Language>(loadingPageData.language, out this.lang);
+        //     this.reg = loadingPageData.region;
+        // } catch (System.Exception e) {
+        //     Debug.Log($"[LanguageManager] Failed to get region and language from loading page. {e.Message}");
+            this.lang = Language.en;
+            this.reg = "us";
+        // }
+#else
+        this.lang = Language.en;
+        this.reg = "us";
 #endif
     }
 
@@ -246,9 +267,6 @@ public class LanguageManager : MonoBehaviour
             onLanguageChanged.Invoke(this.lang);
         }
     }
-
-    [DllImport("__Internal")]
-    private static extern string GetLocale();
 
     public bool SetLanguage(string language)
     {
@@ -357,5 +375,218 @@ public class LanguageManager : MonoBehaviour
     public abstract class LanguageElement
     {
         public Language language;
+    }
+
+    public static Dictionary<string, string> LanguageCodes = new Dictionary<string, string>() {
+        {"ab", "Abkhazian"},
+        {"aa", "Afar"},
+        {"af", "Afrikaans"},
+        {"ak", "Akan"},
+        {"sq", "Albanian"},
+        {"am", "Amharic"},
+        {"ar", "Arabic"},
+        {"an", "Aragonese"},
+        {"hy", "Armenian"},
+        {"as", "Assamese"},
+        {"av", "Avaric"},
+        {"ae", "Avestan"},
+        {"ay", "Aymara"},
+        {"az", "Azerbaijani"},
+        {"bm", "Bambara"},
+        {"ba", "Bashkir"},
+        {"eu", "Basque"},
+        {"be", "Belarusian"},
+        {"bn", "Bengali (Bangla)"},
+        {"bh", "Bihari"},
+        {"bi", "Bislama"},
+        {"bs", "Bosnian"},
+        {"br", "Breton"},
+        {"bg", "Bulgarian"},
+        {"my", "Burmese"},
+        {"ca", "Catalan"},
+        {"ch", "Chamorro"},
+        {"ce", "Chechen"},
+        {"ny", "Chichewa, Chewa, Nyanja"},
+        {"zh", "Chinese"},
+        {"cv", "Chuvash"},
+        {"kw", "Cornish"},
+        {"co", "Corsican"},
+        {"cr", "Cree"},
+        {"hr", "Croatian"},
+        {"cs", "Czech"},
+        {"da", "Danish"},
+        {"dv", "Divehi, Dhivehi, Maldivian"},
+        {"nl", "Dutch"},
+        {"dz", "Dzongkha"},
+        {"en", "English"},
+        {"eo", "Esperanto"},
+        {"et", "Estonian"},
+        {"ee", "Ewe"},
+        {"fo", "Faroese"},
+        {"fj", "Fijian"},
+        {"fi", "Finnish"},
+        {"fr", "French"},
+        {"ff", "Fula, Fulah, Pulaar, Pular"},
+        {"gl", "Galician"},
+        {"gd", "Gaelic (Scottish)"},
+        {"gv", "Gaelic (Manx)"},
+        // {"gv", "Manx"},
+        {"ka", "Georgian"},
+        {"de", "German"},
+        {"el", "Greek"},
+        // {"kl", "Greenlandic"},
+        {"kl", "Kalaallisut, Greenlandic"},
+        {"gn", "Guarani"},
+        {"gu", "Gujarati"},
+        {"ht", "Haitian Creole"},
+        {"ha", "Hausa"},
+        {"he", "Hebrew"},
+        {"hz", "Herero"},
+        {"hi", "Hindi"},
+        {"ho", "Hiri Motu"},
+        {"hu", "Hungarian"},
+        {"is", "Icelandic"},
+        {"io", "Ido"},
+        {"ig", "Igbo"},
+        {"id", "Indonesian"},
+        {"in", "Indonesian"},
+        {"ia", "Interlingua"},
+        {"ie", "Interlingue"},
+        {"iu", "Inuktitut"},
+        {"ik", "Inupiak"},
+        {"ga", "Irish"},
+        {"it", "Italian"},
+        {"ja", "Japanese"},
+        {"jv", "Javanese"},
+        {"kn", "Kannada"},
+        {"kr", "Kanuri"},
+        {"ks", "Kashmiri"},
+        {"kk", "Kazakh"},
+        {"km", "Khmer"},
+        {"ki", "Kikuyu"},
+        {"rw", "Kinyarwanda (Rwanda)"},
+        {"rn", "Kirundi"},
+        {"ky", "Kyrgyz"},
+        {"kv", "Komi"},
+        {"kg", "Kongo"},
+        {"ko", "Korean"},
+        {"ku", "Kurdish"},
+        {"kj", "Kwanyama"},
+        {"lo", "Lao"},
+        {"la", "Latin"},
+        {"lv", "Latvian (Lettish)"},
+        {"li", "Limburgish ( Limburger)"},
+        {"ln", "Lingala"},
+        {"lt", "Lithuanian"},
+        {"lu", "Luga-Katanga"},
+        {"lg", "Luganda, Ganda"},
+        {"lb", "Luxembourgish"},
+        {"mk", "Macedonian"},
+        {"mg", "Malagasy"},
+        {"ms", "Malay"},
+        {"ml", "Malayalam"},
+        {"mt", "Maltese"},
+        {"mi", "Maori"},
+        {"mr", "Marathi"},
+        {"mh", "Marshallese"},
+        {"mo", "Moldavian"},
+        {"mn", "Mongolian"},
+        {"na", "Nauru"},
+        {"nv", "Navajo"},
+        {"ng", "Ndonga"},
+        {"nd", "Northern Ndebele"},
+        {"ne", "Nepali"},
+        {"no", "Norwegian"},
+        {"nb", "Norwegian bokmål"},
+        {"nn", "Norwegian nynorsk"},
+        // {"ii", "Nuosu"},
+        {"ii", "Sichuan Yi"},
+        {"oc", "Occitan"},
+        {"oj", "Ojibwe"},
+        {"cu", "Old Church Slavonic, Old Bulgarian"},
+        {"or", "Oriya"},
+        {"om", "Oromo (Afaan Oromo)"},
+        {"os", "Ossetian"},
+        {"pi", "Pāli"},
+        {"ps", "Pashto, Pushto"},
+        {"fa", "Persian (Farsi)"},
+        {"pl", "Polish"},
+        {"pt", "Portuguese"},
+        {"pa", "Punjabi (Eastern)"},
+        {"qu", "Quechua"},
+        {"rm", "Romansh"},
+        {"ro", "Romanian"},
+        {"ru", "Russian"},
+        {"se", "Sami"},
+        {"sm", "Samoan"},
+        {"sg", "Sango"},
+        {"sa", "Sanskrit"},
+        {"sr", "Serbian"},
+        {"sh", "Serbo-Croatian"},
+        {"st", "Sesotho"},
+        {"tn", "Setswana"},
+        {"sn", "Shona"},
+        {"sd", "Sindhi"},
+        {"si", "Sinhalese"},
+        {"ss", "Siswati"},
+        // {"ss", "Swati"},
+        {"sk", "Slovak"},
+        {"sl", "Slovenian"},
+        {"so", "Somali"},
+        {"nr", "Southern Ndebele"},
+        {"es", "Spanish"},
+        {"su", "Sundanese"},
+        {"sw", "Swahili (Kiswahili)"},
+        {"sv", "Swedish"},
+        {"tl", "Tagalog"},
+        {"ty", "Tahitian"},
+        {"tg", "Tajik"},
+        {"ta", "Tamil"},
+        {"tt", "Tatar"},
+        {"te", "Telugu"},
+        {"th", "Thai"},
+        {"bo", "Tibetan"},
+        {"ti", "Tigrinya"},
+        {"to", "Tonga"},
+        {"ts", "Tsonga"},
+        {"tr", "Turkish"},
+        {"tk", "Turkmen"},
+        {"tw", "Twi"},
+        {"ug", "Uyghur"},
+        {"uk", "Ukrainian"},
+        {"ur", "Urdu"},
+        {"uz", "Uzbek"},
+        {"ve", "Venda"},
+        {"vi", "Vietnamese"},
+        {"vo", "Volapük"},
+        {"wa", "Wallon"},
+        {"cy", "Welsh"},
+        {"wo", "Wolof"},
+        {"fy", "Western Frisian"},
+        {"xh", "Xhosa"},
+        {"yi", "Yiddish"},
+        {"ji", "Yiddish"},
+        {"yo", "Yoruba"},
+        {"za", "Zhuang, Chuang"},
+        {"zu", "Zulu"},
+    };
+    public static Dictionary<string, string> CountryCodes = new Dictionary<string, string>() {
+        {"US", "United States of America"},
+        {"CA", "Canada"},
+        {"MX", "Mexico"}
+        // TODO: complete this list
+    };
+
+    public enum CountryCode
+    {
+        US,
+        CA,
+        MX
+    }
+
+    public struct WindowSpraoi
+    {
+        public string language;
+        public string region;
     }
 }

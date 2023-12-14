@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-
+using System.Text.RegularExpressions;
 
 public class CustomBuildSettings : EditorWindow
 {
@@ -17,66 +17,67 @@ public class CustomBuildSettings : EditorWindow
 
 
     [SerializeField]
-    private float RamInGb = 2f;
+    private float HeapInMB = 200f;
+    [SerializeField] private float MaxHeapInMB = 2000f;
     private void OnEnable()
     {
         titleContent = new GUIContent("WebGL Memory");
     }
 
-    private void AddMenuItemForFloat(GenericMenu menu, string menuPath, float value)
+    private void AddMenuItemForFloat(GenericMenu menu, string menuPath, float value, GenericMenu.MenuFunction2 callback)
     {
-        menu.AddItem(new GUIContent(menuPath), RamInGb.Equals(value), OnFloatSelected, value);
+        menu.AddItem(new GUIContent(menuPath), HeapInMB.Equals(value), callback, value);
     }
 
-    private void OnFloatSelected(object value)
+    private void OnDefaultRamSelected(object value)
     {
-        RamInGb = (float)value;
-        // PlayerSettings.WebGL.memorySize = (int)(RamInGb * 1024);
-        PlayerSettings.WebGL.emscriptenArgs = $"-s WASM_MEM_MAX={RamInGb}GB";
+        HeapInMB = (float)value;
+        PlayerSettings.WebGL.memorySize = (int)HeapInMB;
+    }
+
+    private void OnMaxHeapSelected(object value)
+    {
+        MaxHeapInMB = (float)value;
+        PlayerSettings.WebGL.emscriptenArgs = $"-s WASM_MEM_MAX={MaxHeapInMB}MB";
     }
 
     private void OnGUI()
     {
+        // current heap size
+        GUILayout.Label($"Current Heap Size: {PlayerSettings.WebGL.memorySize}MB");
+        // change heap size
         if (GUILayout.Button("Select Heap Size"))
         {
             GenericMenu menu = new GenericMenu();
-
-            AddMenuItemForFloat(menu, "1GB", 1f);
-            AddMenuItemForFloat(menu, "2GB - Default", 2f);
-            AddMenuItemForFloat(menu, "3GB", 3f);
-            AddMenuItemForFloat(menu, "4GB", 4f);
-            AddMenuItemForFloat(menu, "5GB", 5f);
-            AddMenuItemForFloat(menu, "6GB", 6f);
-            AddMenuItemForFloat(menu, "7GB", 7f);
-            AddMenuItemForFloat(menu, "8GB", 8f);
-            AddMenuItemForFloat(menu, "9GB", 9f);
-            AddMenuItemForFloat(menu, "10GB", 10f);
-            AddMenuItemForFloat(menu, "11GB", 11f);
-            AddMenuItemForFloat(menu, "12GB", 12f);
-            AddMenuItemForFloat(menu, "13GB", 13f);
-            AddMenuItemForFloat(menu, "14GB", 14f);
-            AddMenuItemForFloat(menu, "15GB", 15f);
-            AddMenuItemForFloat(menu, "16GB", 16f);
-            AddMenuItemForFloat(menu, "17GB", 17f);
-            AddMenuItemForFloat(menu, "18GB", 18f);
-            AddMenuItemForFloat(menu, "19GB", 19f);
-            AddMenuItemForFloat(menu, "20GB", 20f);
-            AddMenuItemForFloat(menu, "21GB", 21f);
-            AddMenuItemForFloat(menu, "22GB", 22f);
-            AddMenuItemForFloat(menu, "23GB", 23f);
-            AddMenuItemForFloat(menu, "24GB", 24f);
-            AddMenuItemForFloat(menu, "25GB", 25f);
-            AddMenuItemForFloat(menu, "26GB", 26f);
-            AddMenuItemForFloat(menu, "27GB", 27f);
-            AddMenuItemForFloat(menu, "28GB", 28f);
-            AddMenuItemForFloat(menu, "29GB", 29f);
-            AddMenuItemForFloat(menu, "30GB", 30f);
-            AddMenuItemForFloat(menu, "31GB", 31f);
-            AddMenuItemForFloat(menu, "32GB", 32f);
+            // 100 MB - 2 GB
+            for (int i = 1; i <= 20; i++)
+            {
+                AddMenuItemForFloat(menu, $"{i * 100}MB", i * 100, OnDefaultRamSelected);
+            }
 
             menu.ShowAsContext();
+        }
 
+        // current max heap size
+        GUILayout.Label($"Current Max Heap Size: {Regex.Match(PlayerSettings.WebGL.emscriptenArgs, @"(?<=WASM_MEM_MAX=)\d+").Value}MB");
+        // change max heap size
+        if (GUILayout.Button("Select Max Heap Size"))
+        {
+            GenericMenu menu = new GenericMenu();
+            // 1 GB - 10 GB
+            for (int i = 1; i <= 10; i++)
+            {
+                AddMenuItemForFloat(menu, $"{i}GB", i * 1024, OnMaxHeapSelected);
+            }
 
+            menu.ShowAsContext();
+        }
+
+        // reset
+        if (GUILayout.Button("Reset"))
+        {
+            PlayerSettings.WebGL.emscriptenArgs = "";
+            PlayerSettings.WebGL.memorySize = 0;
         }
     }
 }

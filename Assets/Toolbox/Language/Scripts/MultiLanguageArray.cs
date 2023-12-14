@@ -13,7 +13,7 @@ public class MultiLanguageArray : MultiLanguageElement
 
     override protected void ApplyElement(LanguageManager.LanguageElement element)
     {
-        Debug.Log("ApplyElement: Asset - " + element.GetType());
+        //Debug.Log("ApplyElement: Asset - " + element.GetType());
         OnLanguageChanged.Invoke((element as LanguageManager.LanguageStringArray).texts);
     }
 
