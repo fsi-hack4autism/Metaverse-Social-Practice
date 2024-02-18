@@ -1,4 +1,5 @@
 # Metaverse-Social-Practice
+This repository is hosted as a part of FSI Hackathon for Autism (https://github.com/fsi-hack4autism)
 
 ## Description
 Developing social relationships with peers can be one of the biggest challenges for people with autism, despite a strong desire to form them. Social programs can be hard to practice due to limited opportunities, which can lead to disappointing outcomes in the few interactions, and stress can and frustration. The Metaverse offers an opportunity to practice social interactions in a fully immersive environment and the ability to formulate successful programs which can repleted at scale. This use case will lay the groundwork for a social interaction in the Metaverse between a subject and an AI generated peer.
