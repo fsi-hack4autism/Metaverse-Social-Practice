@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "Session": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7118",
+      "launchBrowser": false
+    }
+  }
+}
