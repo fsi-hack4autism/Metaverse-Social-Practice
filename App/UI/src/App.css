@@ -1,0 +1,60 @@
+.title{
+  text-align: center;
+}
+
+.App-header {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+}
+
+.row-1 {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+}
+.row-2 {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+}
+.column {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+  justify-content: left;
+}
+
+
+.blue-column {
+  background-color: rgb(142, 187, 239);
+  height: 200px;
+}
+
+.green-column {
+  background-color: rgb(176, 245, 176);
+  height: 200px;
+}
+
+label{
+  padding: 30px;
+}
+
+.submit-button {
+float: right;
+padding: 10px;
+}
+
+.goals-checkboxes{ 
+  padding: 10px;
+}
+
+.template-image{
+  height: 60%;
+  padding: 10px;
+}
