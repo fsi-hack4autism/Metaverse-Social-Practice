@@ -78,3 +78,7 @@ Assets/Avatars/Models/Wanyi_Idle.meta
 Assets/Avatars/Models/Wanyi.meta
 **/env.txt
 **/env.txt.meta
+
+# Ignore Python related folders used in Hackathon 2024
+/python_oai/pyvenv/
+/python_oai/sample_data/
